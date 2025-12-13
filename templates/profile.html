@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.profile-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    animation: ghibli-haze 6s infinite alternate;
+}
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+.profile-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #4cc9f0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.profile-info p {
+    font-size: 17px;
+    margin: 6px 0;
+    color: #2a2a2a;
+}
+.edit-section {
+    margin-top: 25px;
+    display: none;
+}
+.avatar-choice {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    margin: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: 0.3s;
+}
+.avatar-choice:hover {
+    border-color: #4cc9f0;
+    transform: scale(1.05);
+}
+button {
+    width: 100%;
+}
+</style>
+
+<div class="profile-card">
+    <h1>Your Profile</h1>
+
+    <div class="profile-top">
+        <img src="{{ url_for('static', filename='images/avatars/' ~ (current_user.avatar or 'avatar1.jpg')) }}"
+            class="profile-avatar" alt="avatar">
+        <div class="profile-info">
+            <p><strong>Username:</strong> {{ current_user.username }}</p>
+            <p><strong>Total Minutes:</strong> {{ total_minutes }}</p>
+            <p><strong>XP:</strong> {{ xp }}</p>
+            <p><strong>Level:</strong> {{ level }}</p>
+            <p><strong>Streak:</strong> {{ streak }} days</p>
+        </div>
+    </div>
+
+    <button onclick="toggleEdit()" class="btn" style="margin-top:15px;">
+        Edit Profile
+    </button>
+
+    <form method="POST" action="{{ url_for('profile') }}" class="edit-section" id="editSection">
+
+        <h3 style="color:#176a90; margin-top:20px;">Change Username</h3>
+        <input
+            type="text"
+            name="username"
+            class="input-field"
+            value="{{ current_user.username }}"
+            required
+        >
+
+        <h3 style="text-align:center; color:#176a90; margin-top:25px;">
+            Change Avatar
+        </h3>
+
+        <div style="text-align:center;">
+            {% for avatar in avatars %}
+                <label>
+                    <input type="radio" name="avatar" value="{{ avatar }}" style="display:none;">
+                    <img src="{{ url_for('static', filename='images/avatars/' ~ avatar) }}"
+                        class="avatar-choice">
+                </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+
+<script>
+function toggleEdit() {
+    const editBox = document.getElementById("editSection");
+    editBox.style.display = editBox.style.display === "block" ? "none" : "block";
+}
+</script>
+{% endblock %}

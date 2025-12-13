@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h2>User Management</h2>
+
+    <table width="100%" cellspacing="0" cellpadding="8">
+        <tr style="text-align:left;">
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+
+            <td>
+                {% if user.role != 'admin' %}
+                <form method="POST"
+                    action="{{ url_for('admin_delete_user', user_id=user.id) }}"
+                    onsubmit="return confirm('Delete this user permanently?');"
+                    style="margin:0;">
+                    <button type="submit" class="btn danger-btn">
+                        Delete
+                    </button>
+                </form>
+                {% else %}
+                    <em>Protected</em>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

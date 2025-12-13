@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Login to Trackdemic</h2>
+
+    <form method="POST" class="login-form">
+        {{ form.hidden_tag() }}
+
+        <div class="input-group">
+            <label class="floating-label">Email</label>
+            {{ form.email(class_="input-field", placeholder=" ") }}
+        </div>
+
+        <div class="input-group">
+            <label class="floating-label">Password</label>
+            {{ form.password(class_="input-field", placeholder="Password ") }}
+            
+        </div>
+        <button type="submit">{{ form.submit.label.text }}</button>
+    </form>
+
+    <p style="text-align:center; margin-top:10px;">
+        New here? <a href="{{ url_for('register') }}">Register now</a>!
+    </p>
+</div>
+
+{% endblock %}

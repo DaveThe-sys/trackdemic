@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" style="max-width:650px;">
+    <h2>Subjects</h2>
+
+    {% if not request.args.get('add') %}
+        <a href="{{ url_for('subjects', add='true') }}" class="btn">Add Subject</a>
+    {% endif %}
+
+    {% if request.args.get('add') %}
+    <div style="margin-top:20px;">
+        <form method="POST" action="{{ url_for('add_subject') }}">
+            <div class="form-group">
+                <label>Subject Name</label>
+                <input name="name" class="input-field" placeholder="Enter subject name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Goal Type</label>
+                <select name="goal_type" class="input-field" required>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Goal Minutes</label>
+                <input type="number" name="goal_minutes" class="input-field" min="0" placeholder="Minutes" required>
+            </div>
+
+            <button class="btn">Add Subject</button>
+        </form>
+
+        <a href="{{ url_for('subjects') }}" class="btn" style="margin-top:10px; background:#888;">
+            Cancel
+        </a>
+    </div>
+    {% endif %}
+
+    <br>
+
+    {% if subjects %}
+        {% for s in subjects %}
+        <div class="card" style="padding:20px; margin-bottom:15px;">
+
+            <h3 style="margin:0; color:#176a90;">{{ s.name }}</h3>
+
+            <p>
+                <strong>Goal:</strong>
+                {{ s.goal_minutes }} mins {{ s.goal_type }}
+            </p>
+
+            <div style="margin-top:12px;">
+                <div style="font-size:0.9rem; margin-bottom:6px; color:#2c4f4f;">
+                    {{ s.studied|default(0) }} / {{ s.goal_minutes }} mins
+                    ({{ s.progress|default(0) }}%)
+                </div>
+
+                <div class="progress-bar-outer">
+                    <div class="progress-bar-inner"
+                        style="width: {{ s.progress|default(0) }}%;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div style="margin-top:15px; display:flex; gap:10px;">
+                <a href="{{ url_for('subjects', edit=s.id) }}" class="btn">Edit Goal</a>
+
+                <form method="POST"
+                    action="{{ url_for('delete_subject', subject_id=s.id) }}"
+                    style="flex:1;">
+                    <button class="btn" style="background:#d9534f;">Delete</button>
+                </form>
+            </div>
+
+            <!-- EDIT FORM -->
+            {% if request.args.get('edit')|int == s.id %}
+            <div style="margin-top:15px;">
+                <form method="POST" action="{{ url_for('edit_subject', subject_id=s.id) }}">
+
+                    <div class="form-group">
+                        <label>Goal Type</label>
+                        <select name="goal_type" class="input-field">
+                            <option value="daily" {% if s.goal_type=='daily' %}selected{% endif %}>Daily</option>
+                            <option value="weekly" {% if s.goal_type=='weekly' %}selected{% endif %}>Weekly</option>
+                            <option value="monthly" {% if s.goal_type=='monthly' %}selected{% endif %}>Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Goal Minutes</label>
+                        <input type="number"
+                            name="goal_minutes"
+                            class="input-field"
+                            value="{{ s.goal_minutes }}"
+                            min="0">
+                    </div>
+
+                    <button class="btn">Save</button>
+
+                    <a href="{{ url_for('subjects') }}"
+                    class="btn"
+                    style="background:#888;">
+                        Cancel
+                    </a>
+
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center;">No subjects added yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container leaderboard-container">
+    <h2>Leaderboard</h2>
+
+    <div class="leaderboard-header">
+        <span>Rank</span>
+        <span>User</span>
+        <span>Best Minutes Studied</span>
+    </div>
+
+    {% for user in users %}
+    <div class="leaderboard-row">
+        <span>{{ loop.index }}</span>
+        <span>{{ user.username }}</span>
+        <span>{{ user.xp }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

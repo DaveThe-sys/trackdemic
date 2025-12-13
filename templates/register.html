@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Register to Trackdemic</h2>
+
+    <form method="POST" class="register-form" autocomplete="off">
+        {{ form.hidden_tag() }}
+
+        <div class="input-group">
+            <label class="floating-label">Choose a username</label>
+            {{ form.username(
+                class_="input-field",
+                placeholder=" ",
+                autocomplete="new-username"
+            ) }}
+            
+        </div>
+
+        <div class="input-group">
+            <label class="floating-label">Email</label>
+            {{ form.email(
+                class_="input-field",
+                placeholder=" ",
+                autocomplete="email"
+            ) }}
+            
+        </div>
+
+        <div class="input-group">
+            <label class="floating-label">Password</label>
+            {{ form.password(
+                class_="input-field",
+                placeholder=" ",
+                autocomplete="new-password"
+            ) }}
+            
+        </div>
+
+        <button type="submit">{{ form.submit.label.text }}</button>
+    </form>
+
+    <p style="text-align:center; margin-top:10px;">
+        Already have an account? <a href="{{ url_for('login') }}">Login</a>
+    </p>
+</div>
+
+{% endblock %}

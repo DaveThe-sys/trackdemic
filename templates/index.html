@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trackdemic Dashboard</title>
+    <style>
+    body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: url("static/images/ghibli_bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Poppins";
+    margin: 0;
+    padding: 0;
+    }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Welcome!, {{ username }}. Let The Studying Begin</h2>
+
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Minutes</h3>
+            <p>{{ total_minutes }}</p>
+        </div>
+        <div class="card">
+            <h3>XP</h3>
+            <p>{{ xp }}</p>
+        </div>
+        <div class="card">
+        <h3>Level</h3>
+            <p>{{ level }} ({{ progress }}%)</p>
+        </div>
+        <div class="card">
+        <h3>Streak</h3>
+            <p>{{ streak }} days</p>
+        </div>
+    </div>
+
+    <h3>Badges Earned</h3>
+    <div class="badges">
+        {% if badges %}
+            {% for badge in badges %}
+                <span>{{ badge }}</span>
+            {% endfor %}
+        {% else %}
+            <p>No badges yet. Keep studying!</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a class="btn" href="{{ url_for('add_log') }}">Add New Study Log</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>Trackdemic &copy; 2025</p>
+</footer>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Study Logs</h2>
+
+    {% if logs %}
+        {% for log in logs %}
+        <div class="log-card" id="log_{{ log.id }}">
+
+            <!-- VIEW MODE -->
+            <div class="view-mode">
+                <div class="log-title">{{ log.subject }}</div>
+                <div class="log-info">Total Time: {{ log.minutes }} mins</div>
+                <div class="log-info">Date: {{ log.date.strftime('%Y-%m-%d') }}</div>
+
+                <div class="log-actions mt-2">
+                    <button
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        onclick="editLog({{ log.id }})">
+                        Edit
+                    </button>
+                </div>
+            </div>
+
+            <!-- EDIT MODE (FORCE HIDDEN) -->
+            <form method="POST" class="edit-mode" style="display: none;">
+                <input type="hidden" name="log_id" value="{{ log.id }}">
+                <input type="hidden" name="action" value="edit">
+
+                <label class="mt-2 small">Subject</label>
+                <input
+                    type="text"
+                    name="subject"
+                    class="form-control form-control-sm"
+                    value="{{ log.subject }}"
+                    required>
+
+                <label class="mt-2 small">Minutes</label>
+                <input
+                    type="number"
+                    name="minutes"
+                    class="form-control form-control-sm"
+                    value="{{ log.minutes }}"
+                    min="1"
+                    required>
+
+                <div class="log-actions mt-3">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        Apply Changes
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger btn-sm"
+                        onclick="confirmDelete({{ log.id }})">
+                        Delete
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm"
+                        onclick="cancelEdit({{ log.id }})">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">
+            No study logs yet.
+            <a href="{{ url_for('add_log') }}">Add one</a>.
+        </p>
+    {% endif %}
+</div>
+
+<script>
+function editLog(id) {
+    const card = document.getElementById("log_" + id);
+    card.querySelector(".view-mode").style.display = "none";
+    card.querySelector(".edit-mode").style.display = "block";
+}
+
+function cancelEdit(id) {
+    const card = document.getElementById("log_" + id);
+    card.querySelector(".edit-mode").style.display = "none";
+    card.querySelector(".view-mode").style.display = "block";
+}
+
+function confirmDelete(id) {
+    if (confirm("Delete this log? All XP will be lost.")) {
+        const form = document
+            .getElementById("log_" + id)
+            .querySelector("form");
+
+        form.querySelector("[name='action']").value = "delete";
+        form.submit();
+    }
+}
+</script>
+
+{% endblock %}

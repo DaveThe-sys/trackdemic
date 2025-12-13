@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <p><strong>Total Users:</strong> {{ total_users }}</p>
+    <p><strong>Total Logs:</strong> {{ total_logs }}</p>
+    <hr>
+        <div class="admin-card-grid">
+
+    <div class="admin-card">
+        <h3>User Management</h3>
+        <p>View and manage all registered users.</p>
+        <a href="{{ url_for('admin_users') }}" class="btn">Manage Users</a>
+    </div>
+
+    <div class="admin-card">
+        <h3>Analytics</h3>
+        <p>Track usage statistics and activity.</p>
+        <a href="{{ url_for('admin_analytics') }}" class="btn">View Analytics</a>
+    </div>
+
+    <div class="admin-card">
+        <h3>Logs & Monitoring</h3>
+        <p>Inspect system and study logs.</p>
+        <a href="{{ url_for('admin_logs') }}" class="btn">View Logs</a>
+    </div>
+
+    <div class="admin-card">
+        <h3> Website Settings</h3>
+        <p>Configure system behavior.</p>
+        <a href="#" class="btn">Settings</a>
+    </div>
+
+</div>
+    </hr>
+</div>
+
+</div>
+
+{% endblock %}
