@@ -7,8 +7,6 @@
     {% if logs %}
         {% for log in logs %}
         <div class="log-card" id="log_{{ log.id }}">
-
-            <!-- VIEW MODE -->
             <div class="view-mode">
                 <div class="log-title">{{ log.subject }}</div>
                 <div class="log-info">Total Time: {{ log.minutes }} mins</div>
@@ -24,7 +22,6 @@
                 </div>
             </div>
 
-            <!-- EDIT MODE (FORCE HIDDEN) -->
             <form method="POST" class="edit-mode" style="display: none;">
                 <input type="hidden" name="log_id" value="{{ log.id }}">
                 <input type="hidden" name="action" value="edit">
