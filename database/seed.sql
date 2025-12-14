@@ -89,3 +89,26 @@ WHERE subject_id = 21;
 DELETE FROM subject
 WHERE id = 21;
 
+SELECT user.username, subject.name, subject.goal_type, subject.goal_minutes
+FROM user
+JOIN subject ON user.id = subject.user_id;
+
+SELECT user_id, SUM(minutes) AS total_minutes
+FROM study_log
+GROUP BY user_id;
+
+SELECT username 
+FROM user
+WHERE id IN (
+    SELECT user_id 
+    FROM study_log 
+    WHERE minutes > 60
+);
+
+SELECT name
+FROM subject
+WHERE goal_minutes = (SELECT MAX(goal_minutes) FROM subject);
+
+SELECT username, saved_xp
+FROM user
+ORDER BY saved_xp DESC;
